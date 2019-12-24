@@ -23,12 +23,14 @@ android {
         debug {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "HOST", "\"https://api.themoviedb.org/3\""
+            buildConfigField "String", "HOST", "\"https://api.themoviedb.org/3/\""
+            buildConfigField "String", "API_KEY", "\"f497a5f80e3dd62a5d428ba71943759e\""
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField "String", "HOST", "\"https://api.themoviedb.org/3\""
+            buildConfigField "String", "HOST", "\"\""
+            buildConfigField "String", "API_KEY", "\"\""
         }
     }
 
