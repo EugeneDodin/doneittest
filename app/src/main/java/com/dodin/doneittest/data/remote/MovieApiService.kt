@@ -18,14 +18,19 @@ class MovieApiService() {
             httpClient.addNetworkInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         }
 
-        // Content type interceptor
+        // Content type&api key interceptor
         httpClient.addInterceptor { chain ->
             val original = chain.request()
+
+            val url = original.url.newBuilder()
+                .addQueryParameter("api_key", BuildConfig.API_KEY)
+                .build()
 
             val request = original.newBuilder()
                 .header("Accept", "application/json; utf-8")
                 .header("Content-Type", "application/json")
                 .method(original.method, original.body)
+                .url(url)
                 .build()
 
             return@addInterceptor chain.proceed(request)
