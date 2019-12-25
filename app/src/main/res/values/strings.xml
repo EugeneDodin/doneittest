@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">doneittest</string>
+    <string name="networkNotAvailable">Сеть недоступна</string>
 </resources>

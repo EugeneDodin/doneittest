@@ -2,12 +2,11 @@ package com.dodin.doneittest
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dodin.doneittest.common.Lce
+import com.dodin.doneittest.common.PaginationListener
 import com.dodin.doneittest.databinding.ActivityMainBinding
 import com.dodin.doneittest.di.ViewModelFactory
 import com.dodin.doneittest.ui.MainViewModel
@@ -21,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var factory: ViewModelFactory
     private lateinit var model: MainViewModel
     private lateinit var binding: ActivityMainBinding
+    private var networkErrorMessage: Snackbar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +35,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun initObservers() {
         model.movies.observe(this, Observer {
-            binding.progress.isVisible = it is Lce.Loading
-            when(it) {
-                is Lce.Error -> {
-                    Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT).show()
-                }
-                is Lce.Success -> {
-                    (binding.list.adapter as MoviesAdapter).submitList(it.data)
-                }
+            (binding.list.adapter as MoviesAdapter).submitList(it)
+        })
+
+        model.networkState.observe(this, Observer { isAvailable ->
+            if (isAvailable) {
+                networkErrorMessage?.dismiss()
+            } else {
+                networkErrorMessage = Snackbar.make(binding.root, getString(R.string.networkNotAvailable), Snackbar.LENGTH_INDEFINITE)
+                networkErrorMessage?.show()
             }
         })
     }
@@ -51,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         with(binding.list) {
             layoutManager = LinearLayoutManager(this@MainActivity)
             adapter = MoviesAdapter()
+            addOnScrollListener(object : PaginationListener(layoutManager as LinearLayoutManager) {
+                override fun loadMoreItems() {
+                    model.loadNext()
+                }
+            })
         }
     }
 }
