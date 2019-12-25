@@ -49,5 +49,5 @@ class MovieApiService() {
         api = retrofit.create<MovieApi>(MovieApi::class.java)
     }
 
-    fun getPopular() = api.getPopular()
+    fun getPopular(page: Int) = api.getPopular(page)
 }
