@@ -1,6 +1,6 @@
 package com.dodin.doneittest.di
 
-import com.dodin.doneittest.MainActivity
+import com.dodin.doneittest.ui.MainActivity
 import com.dodin.doneittest.data.remote.MovieApiService
 import dagger.Component
 import javax.inject.Singleton

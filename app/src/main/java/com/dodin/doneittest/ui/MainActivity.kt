@@ -1,4 +1,4 @@
-package com.dodin.doneittest
+package com.dodin.doneittest.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -6,10 +6,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dodin.doneittest.App
+import com.dodin.doneittest.R
 import com.dodin.doneittest.common.PaginationListener
 import com.dodin.doneittest.databinding.ActivityMainBinding
 import com.dodin.doneittest.di.ViewModelFactory
-import com.dodin.doneittest.ui.MainViewModel
 import com.dodin.doneittest.ui.adapters.MoviesAdapter
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
@@ -24,7 +25,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = DataBindingUtil.setContentView(this,
+            R.layout.activity_main
+        )
 
         (application as App).appComponent.inject(this)
         model = ViewModelProvider(this, factory).get(MainViewModel::class.java)
